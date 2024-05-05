@@ -1,30 +1,37 @@
-# React + TypeScript + Vite
+# Work in progress
+## A social media application showcase. 
+### Built with React / Typescript / Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Built as a showcase for a social media application. The application is built with React, Typescript and Vite. The application uses Appwrite as a backend service for authentication, database and file storage. The application is a showcase for a social media application where users can create posts, like posts, comment on posts and follow other users. The application is built with a mobile first approach and is responsive.
 
-Currently, two official plugins are available:
+### Live showcase built & deployed it Vercel
+[Demo Link](https://acube-media.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+#### Packages used:
 
-## Expanding the ESLint configuration
+Styling: [Tailwind](https://tailwindcss.com/) \
+Database: [Appwrite](https://appwrite.io) \
+Routing: [React Router](https://reactrouter.com/) \
+Some UI Components: [ShadCN](https://ui.shadcn.com/docs)
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+```Node version min. requirement: v20 and higher```
 
-- Configure the top-level `parserOptions` property like this:
+#### How to run:
+Create a `.env.local` file and populate the values with you account details.
+````
+VITE_APPWRITE_PROJECT_ID=
+VITE_APPWRITE_URL='https://cloud.appwrite.io/v1'
+VITE_APPWRITE_MEDIA_STORAGE_ID=
+VITE_APPWRITE_DATABASE_ID=
 
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
-```
+VITE_SAVES_COLLECTION_ID=
+VITE_USER_COLLECTION_ID=
+VITE_POST_COLLECTION_ID=
+````
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+Install packages
+``npm install``\
+Run application on dev mode
+``npm run dev``\
+Create a production build
+``npm run build``
