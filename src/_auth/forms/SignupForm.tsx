@@ -1,6 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import { z } from "zod"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,12 +14,25 @@ import {
 import { Input } from "@/components/ui/input"
 import { SignupValidation } from "@/lib/validations";
 import Spinner from "@/components/common/Spinner.tsx";
-import { createUserAccount } from "@/lib/appwrite/api.ts";
 import { useToast } from '@/components/ui/use-toast'
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queryAndMutations.ts";
+import { useUserContext } from "@/context/AuthContext.tsx";
 
 const SignupForm = () => {
   const { toast } = useToast()
-  const isLoading = false
+  const navigate = useNavigate()
+  const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
+
+  const {
+    mutateAsync: createUserAccount,
+    isPending: isCreatingAccount
+  } = useCreateUserAccount()
+
+  const {
+    mutateAsync: signInAccount,
+    isPending: isSigningIn
+  } = useSignInAccount()
+
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
     defaultValues: {
@@ -42,11 +55,31 @@ const SignupForm = () => {
       return
     }
 
-    toast({
-      variant: 'destructive',
-      title: 'User account successfully created',
+    const session = await signInAccount({
+      email: values.email, password: values.password
     })
-    // const session = await signInAccount()
+
+    if (!session) {
+      toast({
+        variant: 'destructive',
+        title: 'Sign in failed',
+      })
+
+      return
+    }
+
+    const isLoggedIn = await checkAuthUser()
+debugger
+    if (isLoggedIn) {
+      form.reset()
+
+      navigate('/')
+    } else {
+      toast({
+        variant: 'destructive',
+        title: 'Sign in failed',
+      })
+    }
   }
 
   return (
@@ -115,14 +148,14 @@ const SignupForm = () => {
             )}
           />
           <Button className="shad-button_primary" type="submit">
-            {isLoading
+            {isCreatingAccount
               ? <Spinner />
               : 'Sign Up'}
           </Button>
 
-          <p className="text-small-regular text-light-2 text-center mt-2">
+          <p className="text-sm text-light-2 text-center mt-2">
             Already have an account?
-            <Link to="/sign-in" className="text-primary-500 text-small ml-1">
+            <Link to="/sign-in" className="text-primary-500 text-sm ml-1">
               Log in
             </Link>
           </p>
