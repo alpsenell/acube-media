@@ -1,7 +1,9 @@
+import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
+
 import { useForm } from "react-hook-form"
 import { Link, useNavigate } from "react-router-dom"
-import { z } from "zod"
+
 import { Button } from "@/components/ui/button"
 import {
   Form,
@@ -12,9 +14,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { SigninValidation } from "@/lib/validations";
-import Spinner from "@/components/common/Spinner.tsx";
 import { useToast } from '@/components/ui/use-toast'
+import Spinner from "@/components/common/Spinner.tsx";
+
+import { SigninValidation } from "@/lib/validations";
 import { useSignInAccount } from "@/lib/react-query/queryAndMutations.ts";
 import { useUserContext } from "@/context/AuthContext.tsx";
 
@@ -23,10 +26,7 @@ const SigninForm = () => {
   const navigate = useNavigate()
   const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
 
-  const {
-    mutateAsync: signInAccount,
-    isPending
-  } = useSignInAccount()
+  const { mutateAsync: signInAccount } = useSignInAccount()
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -37,6 +37,7 @@ const SigninForm = () => {
   })
 
   async function onSubmit(values: z.infer<typeof SigninValidation>) {
+    console.log('logging')
     const session = await signInAccount({
       email: values.email, password: values.password
     })
@@ -109,8 +110,8 @@ const SigninForm = () => {
           </Button>
 
           <p className="text-sm text-light-2 text-center mt-2">
-            Dont have an account?
-            <Link to="/sign-up" className="text-primary-500 text-sm ml-1">
+            Dont have an account ?
+            <Link to="/sign-up" className="text-primary-500 text-sm ml-1 hover:text-amber-700">
               Sign Up
             </Link>
           </p>

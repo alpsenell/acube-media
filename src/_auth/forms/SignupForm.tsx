@@ -21,7 +21,7 @@ import { useUserContext } from "@/context/AuthContext.tsx";
 const SignupForm = () => {
   const { toast } = useToast()
   const navigate = useNavigate()
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext()
+  const { checkAuthUser } = useUserContext()
 
   const {
     mutateAsync: createUserAccount,
@@ -29,8 +29,7 @@ const SignupForm = () => {
   } = useCreateUserAccount()
 
   const {
-    mutateAsync: signInAccount,
-    isPending: isSigningIn
+    mutateAsync: signInAccount
   } = useSignInAccount()
 
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -154,8 +153,8 @@ debugger
           </Button>
 
           <p className="text-sm text-light-2 text-center mt-2">
-            Already have an account?
-            <Link to="/sign-in" className="text-primary-500 text-sm ml-1">
+            Already have an account ?
+            <Link to="/sign-in" className="text-primary-500 hover:text-amber-700 text-sm ml-1">
               Log in
             </Link>
           </p>

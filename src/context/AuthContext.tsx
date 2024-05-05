@@ -6,9 +6,9 @@ import { useNavigate } from 'react-router-dom'
 export const INITIAL_USER = {
   email: '',
   name: '',
+  username: '',
   id: '',
   imageUrl: '',
-  password: '',
   bio: '',
 }
 
@@ -46,7 +46,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       setIsAuthenticated(true)
 
-      return false
+      return true
     } catch (error) {
       console.error(error)
     } finally {
@@ -58,7 +58,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   useEffect(() => {
     if (
-      localStorage.getItem('cookieFallback' === '[]')
+      localStorage.getItem('cookieFallback') === null
     ) {
       navigate('/sign-in')
     }
@@ -76,6 +76,7 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
+    // @ts-ignore
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
