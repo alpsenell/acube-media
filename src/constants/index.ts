@@ -25,3 +25,26 @@ export const SIDE_BAR_LINKS = [
     text: "Create Post",
   },
 ]
+
+export const BOTTOM_BAR_LINKS = [
+  {
+    image: "home",
+    to: "/",
+    text: "Home",
+  },
+  {
+    image: "explore",
+    to: "/explore",
+    text: "Explore",
+  },
+  {
+    image: "saved",
+    to: "/saved",
+    text: "Saved",
+  },
+  {
+    image: "create-post",
+    to: "/create-post",
+    text: "Create Post",
+  },
+]
