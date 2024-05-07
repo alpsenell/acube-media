@@ -5,6 +5,7 @@ import Spinner from "@/components/common/Spinner.tsx";
 
 const EditPost = () => {
   const { id } = useParams()
+  // @ts-expect-error library error
   const { data: post, isPending } = useGetPostById(id)
 
   if (isPending) {

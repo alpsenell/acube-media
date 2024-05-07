@@ -319,7 +319,7 @@ export async function updatePost(post: IUpdatePost) {
     console.error(error)
   }
 }
-
+// @ts-expect-error library error
 export async function deletePost(postId: string, imageId: string) {
   try {
     await database.deleteDocument(

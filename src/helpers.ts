@@ -1,4 +1,8 @@
-export function timeAgo(dateISOString: string): string {
+export function timeAgo(dateISOString: string|undefined): string {
+  if (!dateISOString) {
+    return ''
+  }
+
   const now = new Date()
   const pastDate = new Date(dateISOString)
   const diff = now.getTime() - pastDate.getTime()
