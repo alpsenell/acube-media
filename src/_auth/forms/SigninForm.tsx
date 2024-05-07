@@ -15,11 +15,11 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useToast } from '@/components/ui/use-toast'
-import Spinner from "@/components/common/Spinner.tsx";
+import Spinner from "@/components/common/Spinner.tsx"
 
-import { SigninValidation } from "@/lib/validations";
-import { useSignInAccount } from "@/lib/react-query/queryAndMutations.ts";
-import { useUserContext } from "@/context/AuthContext.tsx";
+import { SigninValidation } from "@/lib/validations"
+import { useSignInAccount } from "@/lib/react-query/queryAndMutations.ts"
+import { useUserContext } from "@/context/AuthContext.tsx"
 
 const SigninForm = () => {
   const { toast } = useToast()
@@ -117,7 +117,7 @@ const SigninForm = () => {
         </form>
       </div>
     </Form>
-  );
-};
+  )
+}
 
-export default SigninForm;
+export default SigninForm

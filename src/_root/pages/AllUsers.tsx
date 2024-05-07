@@ -3,7 +3,7 @@ const AllUsers = () => {
     <div>
       AllUsers
     </div>
-  );
-};
+  )
+}
 
-export default AllUsers;
+export default AllUsers

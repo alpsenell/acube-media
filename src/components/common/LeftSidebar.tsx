@@ -1,22 +1,22 @@
-import { useEffect } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { useSignOutAccount } from '@/lib/react-query/queryAndMutations.ts';
-import { useUserContext } from '@/context/AuthContext.tsx';
-import { SIDE_BAR_LINKS } from '@/constants';
-import { INavLink } from "@/types";
-import { Button } from "@/components/ui/button.tsx";
+import { useEffect } from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useSignOutAccount } from '@/lib/react-query/queryAndMutations.ts'
+import { useUserContext } from '@/context/AuthContext.tsx'
+import { SIDE_BAR_LINKS } from '@/constants'
+import { INavLink } from "@/types"
+import { Button } from "@/components/ui/button.tsx"
 
 const LeftSidebar = () => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
   const { mutate: signOut, isSuccess } = useSignOutAccount()
   const navigate = useNavigate()
   const { user } = useUserContext()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/sign-in');
+      navigate('/sign-in')
     }
-  }, [isSuccess]);
+  }, [isSuccess])
 
   return (
     <nav className="leftsidebar">
@@ -48,7 +48,7 @@ const LeftSidebar = () => {
 
         <ul className="flex flex-col gap-6">
           {SIDE_BAR_LINKS.map((link: INavLink) => {
-            const isActive = pathname === link.to;
+            const isActive = pathname === link.to
 
             return (
               <li
@@ -90,7 +90,7 @@ const LeftSidebar = () => {
       </Button>
 </nav>
 )
-  ;
-};
+  
+}
 
-export default LeftSidebar;
+export default LeftSidebar

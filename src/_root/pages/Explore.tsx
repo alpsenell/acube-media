@@ -3,7 +3,7 @@ const Explore = () => {
     <div>
       Explore
     </div>
-  );
-};
+  )
+}
 
-export default Explore;
+export default Explore

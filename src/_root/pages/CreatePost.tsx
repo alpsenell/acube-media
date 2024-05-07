@@ -1,4 +1,4 @@
-import PostForm from "@/components/forms/PostForm.tsx";
+import PostForm from "@/components/forms/PostForm.tsx"
 
 const CreatePost = () => {
   return (
@@ -19,7 +19,7 @@ const CreatePost = () => {
         <PostForm />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreatePost;
+export default CreatePost

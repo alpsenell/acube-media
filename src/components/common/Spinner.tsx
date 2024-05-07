@@ -9,7 +9,7 @@ const Spinner = () => {
         height={24}
       />
     </div>
-  );
-};
+  )
+}
 
-export default Spinner;
+export default Spinner

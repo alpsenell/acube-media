@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { IContextType, IUser } from "@/types";
-import { getCurrentUser } from "@/lib/appwrite/api.ts";
+import { IContextType, IUser } from "@/types"
+import { getCurrentUser } from "@/lib/appwrite/api.ts"
 import { useNavigate } from 'react-router-dom'
 
 export const INITIAL_USER = {
@@ -76,13 +76,13 @@ const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   }
 
   return (
-    // @ts-ignore
+    // @ts-expect-error library error
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  );
-};
+  )
+}
 
-export default AuthProvider;
+export default AuthProvider
 
 export const useUserContext = () => useContext(AuthContext)

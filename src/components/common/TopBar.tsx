@@ -1,19 +1,19 @@
-import { Link, useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button.tsx";
-import { useSignOutAccount } from "@/lib/react-query/queryAndMutations.ts";
-import { useEffect } from "react";
-import { useUserContext } from "@/context/AuthContext.tsx";
+import { Link, useNavigate } from "react-router-dom"
+import { Button } from "@/components/ui/button.tsx"
+import { useSignOutAccount } from "@/lib/react-query/queryAndMutations.ts"
+import { useEffect } from "react"
+import { useUserContext } from "@/context/AuthContext.tsx"
 
 const TopBar = () => {
-  const { mutate: signOut, isSuccess } = useSignOutAccount();
-  const navigate = useNavigate();
+  const { mutate: signOut, isSuccess } = useSignOutAccount()
+  const navigate = useNavigate()
   const { user } = useUserContext()
 
   useEffect(() => {
     if (isSuccess) {
-      navigate('/sign-in');
+      navigate('/sign-in')
     }
-  }, [isSuccess]);
+  }, [isSuccess])
 
   return (
     <section className="topbar">
@@ -53,7 +53,7 @@ const TopBar = () => {
 
       </div>
     </section>
-  );
-};
+  )
+}
 
-export default TopBar;
+export default TopBar

@@ -1,7 +1,7 @@
-import Spinner from "@/components/common/Spinner.tsx";
-import { useGetRecentPosts } from "@/lib/react-query/queryAndMutations.ts";
-import { Models } from "appwrite";
-import PostCard from "@/components/common/PostCard.tsx";
+import Spinner from "@/components/common/Spinner.tsx"
+import { useGetRecentPosts } from "@/lib/react-query/queryAndMutations.ts"
+import { Models } from "appwrite"
+import PostCard from "@/components/common/PostCard.tsx"
 
 const Home = () => {
   const {
@@ -30,7 +30,7 @@ const Home = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home

@@ -12,15 +12,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
-import { Textarea } from "@/components/ui/textarea.tsx";
-import FileUploader from "@/components/common/FileUploader.tsx";
-import { Input } from "@/components/ui/input.tsx";
-import { PostValidation } from "@/lib/validations";
-import { Models } from "appwrite";
-import { useUserContext } from "@/context/AuthContext.tsx";
-import { useToast } from "@/components/ui/use-toast.ts";
-import { useCreatePost } from "@/lib/react-query/queryAndMutations.ts";
-import Spinner from "@/components/common/Spinner.tsx";
+import { Textarea } from "@/components/ui/textarea.tsx"
+import FileUploader from "@/components/common/FileUploader.tsx"
+import { Input } from "@/components/ui/input.tsx"
+import { PostValidation } from "@/lib/validations"
+import { Models } from "appwrite"
+import { useUserContext } from "@/context/AuthContext.tsx"
+import { useToast } from "@/components/ui/use-toast.ts"
+import { useCreatePost } from "@/lib/react-query/queryAndMutations.ts"
+import Spinner from "@/components/common/Spinner.tsx"
 
 type PostFormProps = {
   post?: Models.Document
@@ -150,6 +150,6 @@ const PostForm = ({ post }: PostFormProps) => {
       </form>
     </Form>
   )
-};
+}
 
-export default PostForm;
+export default PostForm

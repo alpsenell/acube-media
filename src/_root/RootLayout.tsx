@@ -1,7 +1,7 @@
-import { Outlet } from "react-router-dom";
-import LeftSidebar from "@/components/common/LeftSidebar.tsx";
-import BottomBar from "@/components/common/BottomBar.tsx";
-import TopBar from "@/components/common/TopBar.tsx";
+import { Outlet } from "react-router-dom"
+import LeftSidebar from "@/components/common/LeftSidebar.tsx"
+import BottomBar from "@/components/common/BottomBar.tsx"
+import TopBar from "@/components/common/TopBar.tsx"
 
 const RootLayout = () => {
   return (
@@ -15,7 +15,7 @@ const RootLayout = () => {
 
       <BottomBar />
     </div>
-  );
-};
+  )
+}
 
-export default RootLayout;
+export default RootLayout

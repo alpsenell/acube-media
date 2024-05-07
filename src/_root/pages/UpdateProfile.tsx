@@ -3,7 +3,7 @@ const UpdateProfile = () => {
     <div>
       UpdateProfile
     </div>
-  );
-};
+  )
+}
 
-export default UpdateProfile;
+export default UpdateProfile

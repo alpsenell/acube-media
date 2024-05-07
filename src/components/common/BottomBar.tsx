@@ -1,14 +1,14 @@
-import { Link, useLocation } from "react-router-dom";
-import { BOTTOM_BAR_LINKS } from "@/constants";
-import { INavLink } from "@/types";
+import { Link, useLocation } from "react-router-dom"
+import { BOTTOM_BAR_LINKS } from "@/constants"
+import { INavLink } from "@/types"
 
 const BottomBar = () => {
-  const { pathname } = useLocation();
+  const { pathname } = useLocation()
 
   return (
     <section className="bottom-bar">
       {BOTTOM_BAR_LINKS.map((link: INavLink) => {
-        const isActive = pathname === link.to;
+        const isActive = pathname === link.to
 
         return (
           <Link
@@ -33,7 +33,7 @@ const BottomBar = () => {
         )}
       )}
     </section>
-  );
-};
+  )
+}
 
-export default BottomBar;
+export default BottomBar

@@ -1,7 +1,8 @@
-import { Models } from "appwrite";
-import { Link } from "react-router-dom";
-import { timeAgo } from "@/helpers.ts";
-import { useUserContext } from "@/context/AuthContext.tsx";
+import { Models } from "appwrite"
+import { Link } from "react-router-dom"
+import { timeAgo } from "@/helpers.ts"
+import { useUserContext } from "@/context/AuthContext.tsx"
+import PostStats from "@/components/common/PostStats.tsx"
 
 type PostCardProps = {
   post: Models.Document
@@ -67,8 +68,10 @@ const PostCard = ({ post }: PostCardProps) => {
           alt="post image"
         />
       </Link>
-    </div>
-  );
-};
 
-export default PostCard;
+      <PostStats post={post} userId={user.id} />
+    </div>
+  )
+}
+
+export default PostCard

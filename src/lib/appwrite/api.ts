@@ -154,7 +154,7 @@ export function getFilePreview(fileId: string) {
       fileId,
       2000,
       2000,
-      //@ts-ignore
+      //@ts-expect-error - library conflict
       'top',
       100
     )
@@ -165,7 +165,7 @@ export function getFilePreview(fileId: string) {
 
     return fileUrl
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -175,7 +175,7 @@ export async function deleteFile(fileId: string) {
 
     return { status: 'ok' }
   } catch (error) {
-    console.log(error)
+    console.error(error)
   }
 }
 
@@ -191,4 +191,65 @@ export async function getRecentPosts() {
     }
 
     return posts
+}
+
+export async function likePost(postId: string, likesArray: string[]) {
+  try {
+    const updatedPost = await database.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId,
+      {
+        likes: likesArray
+      }
+    )
+
+    if (!updatedPost) {
+      throw Error
+    }
+
+    return updatedPost
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function savePost(postId: string, userId: string) {
+  try {
+    const updatedPost = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.savesCollectionId,
+      ID.unique(),
+      {
+        user: userId,
+        post: postId,
+      }
+    )
+
+    if (!updatedPost) {
+      throw Error
+    }
+
+    return updatedPost
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function deleteSavedPost(recordId: string) {
+  try {
+    const statusCode = await database.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.savesCollectionId,
+      recordId
+    )
+
+    if (!statusCode) {
+      throw Error
+    }
+
+    return { statusCode: 'ok' }
+  } catch (error) {
+    console.error(error)
+  }
 }

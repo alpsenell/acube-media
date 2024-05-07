@@ -3,7 +3,7 @@ const LikedPosts = () => {
     <div>
       LikedPosts
     </div>
-  );
-};
+  )
+}
 
-export default LikedPosts;
+export default LikedPosts

@@ -12,11 +12,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { SignupValidation } from "@/lib/validations";
-import Spinner from "@/components/common/Spinner.tsx";
+import { SignupValidation } from "@/lib/validations"
+import Spinner from "@/components/common/Spinner.tsx"
 import { useToast } from '@/components/ui/use-toast'
-import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queryAndMutations.ts";
-import { useUserContext } from "@/context/AuthContext.tsx";
+import { useCreateUserAccount, useSignInAccount } from "@/lib/react-query/queryAndMutations.ts"
+import { useUserContext } from "@/context/AuthContext.tsx"
 
 const SignupForm = () => {
   const { toast } = useToast()
@@ -161,7 +161,7 @@ const SignupForm = () => {
         </form>
       </div>
     </Form>
-  );
-};
+  )
+}
 
-export default SignupForm;
+export default SignupForm
