@@ -52,14 +52,18 @@ const PostCard = ({ post }: PostCardProps) => {
         <div className="small-medium lg:base-medium py-5">
           <p>{post.caption}</p>
 
-          <ul className="flex gap-1 mt-2">
-            {post.tags.map((tag: string) => (
-                <li key={tag} className="text-light-3">
-                  #{tag}
-                </li>
-              )
-            )}
-          </ul>
+          {
+            post.tags[0] !== '' ?
+              <ul className="flex gap-1 mt-2">
+                {post.tags.map((tag: string) => (
+                    <li key={tag} className="text-light-3">
+                      #{tag}
+                    </li>
+                  )
+                )}
+              </ul>
+              : ''
+          }
         </div>
 
         <img
@@ -69,7 +73,7 @@ const PostCard = ({ post }: PostCardProps) => {
         />
       </Link>
 
-      <PostStats post={post} userId={user.id} />
+      <PostStats post={post} userId={user.id}/>
     </div>
   )
 }

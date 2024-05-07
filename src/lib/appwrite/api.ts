@@ -1,5 +1,5 @@
 import { ID, Query } from 'appwrite'
-import { INewPost, INewUser } from "@/types"
+import { INewPost, INewUser, IUpdatePost } from "@/types"
 import { account, appwriteConfig, avatars, database, storage } from "@/lib/appwrite/config.ts"
 
 export async function createUserAccount(user: INewUser) {
@@ -250,6 +250,86 @@ export async function deleteSavedPost(recordId: string) {
 
     return { statusCode: 'ok' }
   } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function getPostById(postId: string) {
+  try {
+    return await database.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId
+    )
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function updatePost(post: IUpdatePost) {
+  const hasFileToUpdate = post.file.length > 0
+
+  try {
+    let image = {
+      imageUrl: post.imageUrl,
+      imageId: post.imageId
+    }
+
+    if (hasFileToUpdate) {
+      const uploadedFile = await uploadFile(post.file[0])
+
+      if (!uploadedFile) {
+        console.warn('No uploaded file found!')
+
+        return
+      }
+
+      const fileUrl = getFilePreview(uploadedFile.$id)
+
+      if (!fileUrl) {
+        await deleteFile(uploadedFile.$id)
+        return
+      }
+
+      image = {...image, imageUrl: fileUrl, imageId: uploadedFile.$id }
+    }
+
+    const tags = post.tags?.replace(/ /g, '').split(',') || []
+
+    const updatedPost = await database.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      post.postId,
+      {
+        caption: post.caption,
+        imageUrl: image.imageUrl,
+        imageId: image.imageId,
+        location: post.location,
+        tags: tags,
+      }
+    )
+
+    if (!updatedPost) {
+      await deleteFile(post.imageId)
+      return
+    }
+
+    return updatedPost
+  } catch(error) {
+    console.error(error)
+  }
+}
+
+export async function deletePost(postId: string, imageId: string) {
+  try {
+    await database.deleteDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      postId
+    )
+
+    return { status: 'ok' }
+  } catch(error) {
     console.error(error)
   }
 }

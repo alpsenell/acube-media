@@ -19,15 +19,17 @@ import { PostValidation } from "@/lib/validations"
 import { Models } from "appwrite"
 import { useUserContext } from "@/context/AuthContext.tsx"
 import { useToast } from "@/components/ui/use-toast.ts"
-import { useCreatePost } from "@/lib/react-query/queryAndMutations.ts"
+import { useCreatePost, useUpdatePost } from "@/lib/react-query/queryAndMutations.ts"
 import Spinner from "@/components/common/Spinner.tsx"
 
 type PostFormProps = {
-  post?: Models.Document
+  post?: Models.Document;
+  action: 'Create' | 'Update';
 }
 
-const PostForm = ({ post }: PostFormProps) => {
+const PostForm = ({ post, action }: PostFormProps) => {
   const { mutateAsync: createPost, isPending: isLoadingCreate } = useCreatePost()
+  const { mutateAsync: updatePost, isPending: isUpdatingPost } = useUpdatePost()
   const { user } = useUserContext()
   const { toast } = useToast()
   const navigate = useNavigate()
@@ -38,11 +40,30 @@ const PostForm = ({ post }: PostFormProps) => {
       caption: post ? post?.caption : '',
       file: [],
       location: post ? post?.location : '',
-      tags: post ? post.tags.join(','): ''
+      tags: post ? post.tags.join(',') : ''
     },
   })
 
   async function onSubmit(values: z.infer<typeof PostValidation>) {
+    if (post && action == 'Update') {
+      const updatedPost = await updatePost({
+        ...values,
+        postId: post.$id,
+        imageId: post?.imageId,
+        imageUrl: post?.imageUrl
+      })
+
+      if (!updatedPost) {
+        toast({
+          title: 'Post update failed ! Please try again',
+          variant: 'destructive',
+        })
+      }
+
+      return navigate(`/post/${post.$id}`)
+    }
+
+
     const newPost = await createPost({
       ...values,
       userId: user.id
@@ -139,11 +160,12 @@ const PostForm = ({ post }: PostFormProps) => {
           <Button
             type="submit"
             className="shad-button_primary whitespace-nowrap"
+            disabled={isLoadingCreate || isUpdatingPost}
           >
-            {isLoadingCreate ? (
+            {isLoadingCreate || isUpdatingPost ? (
               <Spinner />
             ) : (
-              'Submit'
+              `${action} Post`
             )}
           </Button>
         </div>
