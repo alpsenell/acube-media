@@ -68,7 +68,7 @@ const SignupForm = () => {
     }
 
     const isLoggedIn = await checkAuthUser()
-debugger
+
     if (isLoggedIn) {
       form.reset()
 

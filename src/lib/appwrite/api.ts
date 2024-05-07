@@ -1,6 +1,6 @@
 import { ID, Query } from 'appwrite'
-import { INewUser } from "@/types"
-import { account, appwriteConfig, avatars, database } from "@/lib/appwrite/config.ts";
+import { INewPost, INewUser } from "@/types"
+import { account, appwriteConfig, avatars, database, storage } from "@/lib/appwrite/config.ts"
 
 export async function createUserAccount(user: INewUser) {
   try {
@@ -16,15 +16,13 @@ export async function createUserAccount(user: INewUser) {
     }
 
     const avatarUrl = avatars.getInitials(user.name)
-    const newUser = await saveUserToDB({
+    return await saveUserToDB({
       accountId: newAccount.$id,
       email: newAccount.email,
       name: newAccount.name,
       imageUrl: avatarUrl,
       username: user.username,
     })
-
-    return newUser
   } catch (error) {
     console.error(error)
   }
@@ -38,14 +36,12 @@ export async function saveUserToDB(user: {
   username?: string;
 }) {
   try {
-    const newUser = await database.createDocument(
+    return await database.createDocument(
       appwriteConfig.databaseId,
       appwriteConfig.userCollectionId,
       ID.unique(),
       user
     )
-
-    return newUser
   } catch (error) {
     console.error(error)
   }
@@ -56,9 +52,7 @@ export async function signInAccount(user: {
   password: string;
 }) {
   try {
-    const session = await account.createEmailPasswordSession(user.email, user.password)
-
-    return session
+    return await account.createEmailPasswordSession(user.email, user.password)
   } catch (error) {
     console.error(error)
   }
@@ -67,7 +61,7 @@ export async function signInAccount(user: {
 export async function getCurrentUser() {
   try {
     const currentAccount = await account.get()
-    console.log('currentAccount', currentAccount)
+
     if (!currentAccount) {
       return
     }
@@ -90,10 +84,111 @@ export async function getCurrentUser() {
 
 export async function signOutAccount() {
   try {
-    const session = await account.deleteSession('current')
-
-    return session
+    return await account.deleteSession('current')
   } catch (error) {
     console.error(error)
   }
+}
+
+export async function createPost(post: INewPost) {
+  try {
+    const uploadedFile = await uploadFile(post.file[0])
+
+    if (!uploadedFile) {
+      console.warn('No uploaded file found!')
+
+      return
+    }
+
+    const fileUrl = getFilePreview(uploadedFile.$id)
+
+    if (!fileUrl) {
+      await deleteFile(uploadedFile.$id)
+      return
+    }
+
+    const tags = post.tags?.replace(/ /g, '').split(',') || []
+
+    const newPost = await database.createDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      ID.unique(),
+      {
+        creator: post.userId,
+        caption: post.caption,
+        imageUrl: fileUrl,
+        imageId: uploadedFile.$id,
+        location: post.location,
+        tags: tags,
+      }
+    )
+
+    if (!newPost) {
+      await deleteFile(uploadedFile.$id)
+      return
+    }
+
+    return newPost
+  } catch(error) {
+    console.error(error)
+  }
+}
+
+export async function uploadFile(file: File) {
+  try {
+    return await storage.createFile(
+      appwriteConfig.storageId,
+      ID.unique(),
+      file
+    )
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export function getFilePreview(fileId: string) {
+  try {
+    const fileUrl = storage.getFilePreview(
+      appwriteConfig.storageId,
+      fileId,
+      2000,
+      2000,
+      //@ts-ignore
+      'top',
+      100
+    )
+
+    if (!fileUrl) {
+      console.warn('No file url found!')
+    }
+
+    return fileUrl
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function deleteFile(fileId: string) {
+  try {
+    await storage.deleteFile(appwriteConfig.storageId, fileId)
+
+    return { status: 'ok' }
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getRecentPosts() {
+  const posts = await database.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.postCollectionId,
+    [Query.orderDesc('$createdAt'), Query.limit(20)]
+  )
+
+    if (!posts) {
+      throw Error
+    }
+
+    return posts
 }

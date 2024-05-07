@@ -28,3 +28,11 @@ export type INavLink = {
   to: string;
   text: string;
 }
+
+export type INewPost = {
+  userId: string;
+  caption: string;
+  file: File[];
+  location?: string;
+  tags?: string;
+};
