@@ -79,7 +79,7 @@ const PostDetails = () => {
 
             <hr className="w-full border border-amber-700"/>
 
-            <Link to={`/posts/${post?.$id}`}>
+            <Link to={`/post/${post?.$id}`}>
               <div className="small-medium lg:base-medium py-5">
                 <p>{post?.caption}</p>
 
