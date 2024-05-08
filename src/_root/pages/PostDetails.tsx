@@ -1,10 +1,10 @@
 import { useGetPostById } from "@/lib/react-query/queryAndMutations.ts";
 import { Link, useParams } from "react-router-dom";
-import Spinner from "@/components/common/Spinner.tsx";
-import { timeAgo } from "@/helpers.ts";
-import { useUserContext } from "@/context/AuthContext.tsx";
-import { Button } from "@/components/ui/button.tsx";
-
+import Spinner from "@/components/common/Spinner.tsx"
+import { timeAgo } from "@/helpers.ts"
+import { useUserContext } from "@/context/AuthContext.tsx"
+import { Button } from "@/components/ui/button.tsx"
+import PostStats from "@/components/common/PostStats.tsx"
 
 const PostDetails = () => {
   const { id } = useParams()
@@ -77,26 +77,29 @@ const PostDetails = () => {
               </div>
             </div>
 
-            <hr className="w-full border border-amber-700"/>
+            <hr className="w-full border border-amber-800 rounded"/>
 
-            <Link to={`/post/${post?.$id}`}>
-              <div className="small-medium lg:base-medium py-5">
-                <p>{post?.caption}</p>
+            <div className="flex flex-col flex-1 w-full small-medium lg:base-regular">
+              <p>{post?.caption}</p>
 
-                {
-                  post?.tags[0] !== '' ?
-                    <ul className="flex gap-1 mt-2">
-                      {post?.tags.map((tag: string) => (
-                          <li key={tag} className="text-light-3">
-                            #{tag}
-                          </li>
-                        )
-                      )}
-                    </ul>
-                    : ''
-                }
-              </div>
-            </Link>
+              {
+                post?.tags[0] !== '' ?
+                  <ul className="flex gap-1 mt-2">
+                    {post?.tags.map((tag: string) => (
+                        <li key={tag} className="text-light-3">
+                          #{tag}
+                        </li>
+                      )
+                    )}
+                  </ul>
+                  : ''
+              }
+            </div>
+
+            <div className="w-full">
+              <PostStats post={post} userId={user.id} />
+            </div>
+
           </div>
         </div>
       )}

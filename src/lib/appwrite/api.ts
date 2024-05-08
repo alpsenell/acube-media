@@ -94,10 +94,10 @@ export async function createPost(post: INewPost) {
   try {
     const uploadedFile = await uploadFile(post.file[0])
 
-    if (!uploadedFile) {
+    if (typeof uploadedFile === 'string') {
       console.warn('No uploaded file found!')
 
-      return
+      return uploadedFile
     }
 
     const fileUrl = getFilePreview(uploadedFile.$id)
@@ -142,8 +142,12 @@ export async function uploadFile(file: File) {
       file
     )
 
-  } catch (error) {
-    console.log(error)
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return error?.message
+    }
+
+    return 'An error occurred'
   }
 }
 
@@ -330,6 +334,48 @@ export async function deletePost(postId: string, imageId: string) {
 
     return { status: 'ok' }
   } catch(error) {
+    console.error(error)
+  }
+}
+
+export async function getInfinitePosts({ pageParam }: { pageParam: number }) {
+  const queries: string[] = [Query.orderDesc('$updatedAt'), Query.limit(10)]
+
+  if (pageParam) {
+    queries.push(Query.cursorAfter(pageParam.toString()))
+  }
+
+  try {
+    const posts = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      queries
+    )
+
+    if (!posts) {
+      throw Error
+    }
+
+    return posts
+  } catch (error) {
+    console.error(error)
+  }
+}
+
+export async function searchPosts(searchKeyword: string) {
+  try {
+    const posts = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      [Query.search('caption', searchKeyword)]
+    )
+
+    if (!posts) {
+      throw Error
+    }
+
+    return posts
+  } catch (error) {
     console.error(error)
   }
 }

@@ -69,9 +69,10 @@ const PostForm = ({ post, action }: PostFormProps) => {
       userId: user.id
     })
 
-    if (!newPost) {
+    if (typeof newPost === 'string') {
       toast({
-        title: 'Please try again'
+        title: newPost,
+        variant: 'destructive',
       })
 
       return
