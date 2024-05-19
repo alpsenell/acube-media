@@ -5,7 +5,7 @@ import {
   getRecentPosts,
   likePost, savePost, searchPosts,
   signInAccount,
-  signOutAccount, updatePost
+  signOutAccount, updatePost, getUserById, getUsers
 } from "@/lib/appwrite/api.ts"
 import { INewPost, INewUser, IUpdatePost } from "@/types"
 import { QUERY_KEYS } from "@/lib/react-query/queryKeys.ts"
@@ -159,13 +159,12 @@ export const useGetPosts = () => {
     queryFn: getInfinitePosts as any,
     getNextPageParam: (lastPage: any) => {
       if (lastPage && lastPage.documents.length === 0) {
-        return null;
+        return null
       }
 
-      const lastId = lastPage.documents[lastPage.documents.length - 1].$id;
-      return lastId;
+      return lastPage.documents[lastPage.documents.length - 1].$id
     },
-  });
+  })
 }
 
 export const useSearchPosts = (searchTerm: string) => {
@@ -173,5 +172,20 @@ export const useSearchPosts = (searchTerm: string) => {
     queryKey: [QUERY_KEYS.SEARCH_POSTS, searchTerm],
     queryFn: () => searchPosts(searchTerm),
     enabled: !!searchTerm
+  })
+}
+
+export const useGetUserById = (userId: string) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USER_BY_ID, userId],
+    queryFn: () => getUserById(userId),
+    enabled: !!userId,
+  })
+}
+
+export const useGetUsers = (limit?: number) => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_USERS],
+    queryFn: () => getUsers(limit),
   })
 }

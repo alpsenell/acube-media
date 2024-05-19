@@ -323,14 +323,20 @@ export async function updatePost(post: IUpdatePost) {
     console.error(error)
   }
 }
-// @ts-expect-error library error
-export async function deletePost(postId: string, imageId: string) {
+
+export async function deletePost({ postId, imageId }: { postId: string, imageId: string }) {
   try {
-    await database.deleteDocument(
+    const statusCode = await database.deleteDocument(
       appwriteConfig.databaseId,
       appwriteConfig.postCollectionId,
       postId
     )
+
+    if (!statusCode) {
+      throw Error
+    }
+
+    await deleteFile(imageId)
 
     return { status: 'ok' }
   } catch(error) {
@@ -377,5 +383,47 @@ export async function searchPosts(searchKeyword: string) {
     return posts
   } catch (error) {
     console.error(error)
+  }
+}
+
+export async function getUserById(userId: string) {
+  try {
+    const user = await database.getDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      userId
+    )
+
+    if (!user) {
+      throw Error
+    }
+
+    return user
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export async function getUsers(limit?: number) {
+  const queries: any[] = [Query.orderDesc('$createdAt')]
+
+  if (limit) {
+    queries.push(Query.limit(limit))
+  }
+
+  try {
+    const users = await database.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      queries
+    )
+
+    if (!users) {
+      throw Error
+    }
+
+    return users
+  } catch (error) {
+    console.log(error)
   }
 }

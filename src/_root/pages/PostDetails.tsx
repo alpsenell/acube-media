@@ -1,18 +1,22 @@
 import { useGetPostById } from "@/lib/react-query/queryAndMutations.ts";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Spinner from "@/components/common/Spinner.tsx"
 import { timeAgo } from "@/helpers.ts"
 import { useUserContext } from "@/context/AuthContext.tsx"
 import { Button } from "@/components/ui/button.tsx"
 import PostStats from "@/components/common/PostStats.tsx"
+import { deletePost } from "@/lib/appwrite/api.ts"
 
 const PostDetails = () => {
   const { id } = useParams()
   const { data: post, isPending } = useGetPostById(id || '')
   const { user } = useUserContext()
 
-  const handleDeletePost = () => {
+  const navigate = useNavigate()
 
+  const handleDeletePost = () => {
+    deletePost({ postId: id, imageId: post?.imageId })
+    navigate(-1)
   }
 
   return (
